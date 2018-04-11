@@ -69,6 +69,32 @@ app.post('/api/users', (req, res) => {
     });
 });
 
+// Getting a list of items
+app.get('api/users/:id/items', (req, res) => {
+    let id = parseInt(req.params.id);
+    knex('users').join('items', 'users.id', 'items.user_id')
+        .where('users.id', id) // Get from users
+        .orderBy('item', 'desc') // organize by item name
+        .select('item', 'name').then(items => {
+            res.status(200).json({items: items});
+        }).catch(err => {
+            res.status(500).json({err});
+        });
+});
 
+// Adding a new item
+app.get('api/users/:id/items', (req, res) => {
+    let id = parseInt(req.params.id);
+    knex('users').where('id', id).first().then(user => {
+        return knex('items').insert({user_id: id, item: req.body.item});
+    }).then(ids => {
+        return knex('items').where('id',ids[0]).first();
+    }).then(item => {
+        res.status(200).json({item: item});
+    }).catch(error => {
+        console.log(error);
+        res.status(500).json({ error });
+    });
+});
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));
