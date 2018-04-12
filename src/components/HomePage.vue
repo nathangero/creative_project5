@@ -11,10 +11,11 @@
 
 <script>
  import WelcomePage from './WelcomePage';
- import UserFeed from './UserFeed';
+ import UserItems from './UserItems';
+//  import UserItems from './UserItems';
  export default {
    name: 'HomePage',
-   components: {WelcomePage,UserFeed},
+   components: {WelcomePage},
    computed: {
      loggedIn: function() {
        return this.$store.getters.loggedIn;
