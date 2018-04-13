@@ -2,7 +2,8 @@
   <div class="feed">
     <div>
       <form v-on:submit.prevent="add" class="tweetForm">
-        <textarea v-model="text" placeholder="Description"/><br/>
+        <input v-model="title" placeholder="Item Name"/>
+        <textarea v-model="description" placeholder="Description"/><br/>
         <div class="buttonWrap">
           <button class="primary" type="submit">Add</button>
         </div>
@@ -13,28 +14,31 @@
 </template>
 
 <script>
- import ItemList from './ItemList';
- export default {
-   name: 'UserItems',
-   components: { ItemList },
-   data () {
-     return {
-       text: '',
-     }
-   },
-   created: function() {
-     this.$store.dispatch('getItems');
-   },
-   methods: {
-     add: function() {
-       this.$store.dispatch('addItem',{
-         item: this.text,
-       }).then(item => {
-	        this.text = "";
-       });
-     },
-   }
- }
+import ItemList from './ItemList';
+export default {
+    name: 'UserItems',
+    components: { ItemList },
+    data () {
+      return {
+        title: '',
+        description: '',
+      }
+    },
+    created: function() {
+      this.$store.dispatch('getItems');
+    },
+    methods: {
+      add: function() {
+        this.$store.dispatch('addItem',{
+          item: this.title,
+          description: this.description,
+        }).then(item => {
+          this.title = "";
+          this.description = "";
+        });
+      },
+    }
+}
 </script>
 
 <style scoped>
@@ -54,6 +58,12 @@ button {
     margin-left: auto;
     height: 2em;
     font-size: 0.9em;
+}
+input {
+  margin-bottom: 5px;  
+  height: 20px;
+  padding: 2px;
+  font-size: 16px;
 }
 textarea {
     font-family: 'Avenir';

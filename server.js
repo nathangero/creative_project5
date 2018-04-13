@@ -78,7 +78,7 @@ app.get('/api/users/:id/items', (req, res) => {
     knex('users').join('items', 'users.id', 'items.user_id')
         .where('users.id', id) // Get from users
         .orderBy('item', 'desc') // organize by item name
-        .select('item', 'name').then(items => {
+        .select('item', 'description').then(items => {
             res.status(200).json({items: items});
         }).catch(err => {
             res.status(500).json({err});
@@ -89,7 +89,7 @@ app.get('/api/users/:id/items', (req, res) => {
 app.post('/api/users/:id/items', (req, res) => {
     let id = parseInt(req.params.id);
     knex('users').where('id', id).first().then(user => {
-        return knex('items').insert({user_id: id, item: req.body.item});
+        return knex('items').insert({user_id: id, item: req.body.item, description: req.body.description});
     }).then(ids => {
         return knex('items').where('id',ids[0]).first();
     }).then(item => {
@@ -116,16 +116,17 @@ app.get('/api/users/:id/items/search', (req, res) => {
         limit = parseInt(req.query.limit);
     }
 
+    console.log("searching keywords: " + req.query.keywords);
     knex('users').join('items', 'users.id', 'items.user_id') // Join the users and items by the user's id
-        .whereRaw("MATCH (item) AGAINST (' " + req.query.keywords + "')") // Find matches in join
-        .orderBy('items', 'desc')
+        .whereRaw("MATCH (item) AGAINST ('" + req.query.keywords + "')") // Find matches in join
+        .orderBy('item', 'desc')
         .limit(limit)
         .offset(offset)
-        .select('item', 'description').then(items => { // Select how the items will be shown
+        .select('item', 'picture', 'description').then(items => { // Select items to be shown
             res.status(200).json({items: items});
         }).catch(error => {
             res.status(500).json({error});
-        })
+        });
 });
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));

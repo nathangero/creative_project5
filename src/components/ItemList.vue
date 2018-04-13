@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-for="item in feed" class="item">
-      <p class="idline"><span class="user">{{item.name}}</span></p>
-      <p class="tweet">{{item.item}}</p>
+      <p class="idline"><span class="itemName">{{item.item}}</span></p>
+      <p class="description">{{item.description}}</p>
     </div>
   </div>
 </template>
@@ -24,13 +24,13 @@
     border-bottom: 1px solid #ddd;
     padding: 10px;
 }
-.tweet {
+.description {
     margin-top: 0px;
 }
 .idline {
     margin-bottom: 0px;
 }
-.user {
+.itemName {
     font-weight: bold;
     margin-right: 10px;
 }

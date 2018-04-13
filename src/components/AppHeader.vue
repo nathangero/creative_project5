@@ -2,10 +2,13 @@
     <nav>
         <ul id="menu">
             <li v-if="loggedIn"><router-link to="/">My Stuff</router-link></li>
-            <li v-if="loggedIn"><form v-on:submit.prevent="search">
+            <li v-else><router-link to="/">Home</router-link></li>
+            <li v-if="loggedIn">
+                <form v-on:submit.prevent="search">
                 <input v-model="keywords" placeholder="Search">
                 <a href="#" v-on:click="search" class="search"><i class="fas fa-search"></i></a>
-            </form></li>
+                </form>
+            </li>
             <li class="right" v-if="loggedIn"><a @click="logout" href="#">Logout</a></li>
             <li class="right" v-if="loggedIn">{{user.name}}</li>
             <li class="right" v-else>
@@ -55,6 +58,7 @@ export default {
         },
         logout: function() {
             this.$store.dispatch('logout');
+            this.$router.push({path: '/'}); // Brings user back to homepage 
         },
         search: function() {
             this.$router.push({path: '/search', query: { keywords: this.keywords }});
@@ -84,12 +88,6 @@ export default {
      text-align: center;
      line-height: 50px;
      color: #666;
- }
- /*Active color*/
- li a.active {
- }
- /*Hover state for top level links*/
- li:hover a {
  }
  .right {
      float: right;

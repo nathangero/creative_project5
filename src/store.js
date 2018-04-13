@@ -76,6 +76,7 @@ export default new Vuex.Store({
         logout(context,user) {
             context.commit('setUser', {});
             context.commit('setLogin',false);
+            
         },
 
         // Items
@@ -87,7 +88,6 @@ export default new Vuex.Store({
             });
         },
         addItem(context, item) {
-            console.log('user id: ' + context.state.user.id);
             axios.post('/api/users/' + context.state.user.id + '/items', item).then(response => {
                 return context.dispatch('getItems');
             }).catch(err => {
@@ -98,7 +98,7 @@ export default new Vuex.Store({
         // Search
         doSearch(context, keywords) {
             // Search for only items that the user has
-            axios.get('/api/users/' + context.state.user.id + 'items/search?keywords=' + keywords).then(response => {
+            axios.get('/api/users/' + context.state.user.id + '/items/search?keywords=' + keywords).then(response => {
                 context.commit('setList', response.data.items);
             }).catch(error => {
                 console.log("doSearch failed:",error);

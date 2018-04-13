@@ -1,5 +1,5 @@
 <template>
-  <div class="feed">
+  <div v-if="loggedIn" class="feed">
     <h1>Search Results</h1>
     <p>Searched for {{keywords}}</p>
     <item-list/>
@@ -17,12 +17,15 @@
    computed: {
      keywords: function() {
        return this.$route.query.keywords;
-     }
+     },
+     loggedIn: function() {
+       return this.$store.getters.loggedIn;
+     },
    },
    watch: {
      '$route.query.keywords'() {
        this.$store.dispatch('doSearch',this.$route.query.keywords);
-     }
+     },
    },
  }
 </script>
