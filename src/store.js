@@ -94,6 +94,14 @@ export default new Vuex.Store({
                 console.log("addItem failed:",err);
             });
         },
+        deleteItem(context, item) {
+            console.log("@delete\nitem: " + item.id);
+            axios.post('/api/users/' + context.state.user.id + '/items/' + item.id + '/delete', item.id).then(response => {
+                return context.dispatch('getItems');
+            }).catch(err => {
+                console.log("deleteItem failed:", err);
+            });
+        },
 
         // Search
         doSearch(context, keywords) {

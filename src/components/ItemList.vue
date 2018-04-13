@@ -1,9 +1,13 @@
 <template>
   <div>
-    <div v-for="item in feed" class="item">
-      <p class="idline"><span class="itemName">{{item.item}}</span></p>
-      <p class="description">{{item.description}}</p>
-    </div>
+    <ul>
+      <li v-for="item in feed" class="item">
+        <p class="idline"><span class="itemName">{{item.item}}</span>
+          <button v-on:click="deleteItem(item)" class="delete">X</button>
+        </p>
+        <p class="description">{{item.description}}</p>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -16,30 +20,44 @@
        return this.$store.getters.list;
      },
    },
+   methods: {
+     deleteItem: function(item) {
+       this.$store.dispatch('deleteItem', {
+         id: item.id,
+       });
+     }
+   }
  }
 </script>
 
 <style scoped>
-.item {
+ul {
+    list-style: none;
+}
+li.item {
     border-bottom: 1px solid #ddd;
     padding: 10px;
+    max-width: 600px;
 }
-.description {
+li.description {
     margin-top: 0px;
 }
-.idline {
-    margin-bottom: 0px;
+li.idline {
+    margin-bottom: 5px;
 }
 .itemName {
     font-weight: bold;
     margin-right: 10px;
 }
-.handle {
-    margin-right: 10px;
-    color: #666;
+.delete {
+  display: none;
+  float: right;
+  font-size: 1em;
+  color: #494848;
+  min-width: 25px;
 }
-.time {
-    float: right;
-    color: #666;
-}
+ li:hover .delete {
+     display: block;
+ }
+
 </style>

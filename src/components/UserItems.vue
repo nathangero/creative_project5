@@ -3,7 +3,7 @@
     <div>
       <form v-on:submit.prevent="add" class="tweetForm">
         <input v-model="title" placeholder="Item Name"/>
-        <textarea v-model="description" placeholder="Description"/><br/>
+        <textarea v-model="description" placeholder="Brief description"/><br/>
         <div class="buttonWrap">
           <button class="primary" type="submit">Add</button>
         </div>

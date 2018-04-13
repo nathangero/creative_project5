@@ -72,24 +72,28 @@ app.post('/api/users', (req, res) => {
     });
 });
 
-// Getting a list of items
+// Getting a list of items from the database
 app.get('/api/users/:id/items', (req, res) => {
     let id = parseInt(req.params.id);
     knex('users').join('items', 'users.id', 'items.user_id')
         .where('users.id', id) // Get from users
         .orderBy('item', 'desc') // organize by item name
-        .select('item', 'description').then(items => {
+        .select('*').then(items => {
             res.status(200).json({items: items});
         }).catch(err => {
+            console.log(err);
             res.status(500).json({err});
         });
 });
 
-// Adding a new item
+// Adding a new item to the database
 app.post('/api/users/:id/items', (req, res) => {
     let id = parseInt(req.params.id);
     knex('users').where('id', id).first().then(user => {
-        return knex('items').insert({user_id: id, item: req.body.item, description: req.body.description});
+        if (!req.body.picture) {
+            return knex('items').insert({user_id: id, item: req.body.item, description: req.body.description});
+        }
+        return knex('items').insert({user_id: id, item: req.body.item, picture: req.body.picture, description: req.body.description});
     }).then(ids => {
         return knex('items').where('id',ids[0]).first();
     }).then(item => {
@@ -99,6 +103,25 @@ app.post('/api/users/:id/items', (req, res) => {
         res.status(500).json({ error });
     });
 });
+
+// Delete an item from the database
+app.post('/api/users/:id/items/:id/delete', (req, res) => {
+    let item_id = parseInt(req.params.id);
+    knex('items').where('id', item_id).del().then(items => {
+        res.status(200).json({items:items});
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({ err });
+    })
+});
+
+// Edit an item 
+app.post('/api/users/:id/items/edit', (req, res) => {
+    let id = parseInt(req.params.id);
+    knex('users').where('id', id).first().then(user => {
+
+    });
+})
 
 // Search
 app.get('/api/users/:id/items/search', (req, res) => {
