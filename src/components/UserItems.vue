@@ -1,68 +1,67 @@
 <template>
-    <div class="list">
-        <div>
-            <form v-on:submit.prevent="item" class="itemForm">
-                <textarea v-model="text" placeholder="Enter item description"/><br/>
-                <div class="buttonWrap">
-                    <button class="primary" type="submit">Add</button>
-                </div>
-            </form>
+  <div class="feed">
+    <div>
+      <form v-on:submit.prevent="add" class="tweetForm">
+        <textarea v-model="text" placeholder="Description"/><br/>
+        <div class="buttonWrap">
+          <button class="primary" type="submit">Add</button>
         </div>
-        <div v-for="item in list" class="item">
-            <p class="idline"><span class="user">{{item.name}}</span><span class="handle">@{{item.username}}</span></p>
-            <p class="item">{{item.item}}</p>`
-        </div>
+      </form>
     </div>
+    <item-list/>
+  </div>
 </template>
 
 <script>
-import moment from 'moment';
-export default {
-    name: 'UserItems',
-    data () {
-        return {
-            item: '',
-        }
-    },
-    created: function() {
-        this.$store.dispatch('getItems');
-    },
-    filters: {
-        since: function(datetime) {
-            moment.locale('en', {
-	            relativeTime: {
-                    future: 'in %s',
-                    past: '%s',
-                    s:  'seconds',
-                    ss: '%ss',
-                    m:  '1m',
-                    mm: '%dm',
-                    h:  'h',
-                    hh: '%dh',
-                    d:  'd',
-                    dd: '%dd',
-                    M:  ' month',
-                    MM: '%dM',
-                    y:  'a year',
-                    yy: '%dY'
-	            }
-            });
-        return moment(datetime).fromNow();
-        },
-    },
-    computed: {
-        list: function() {
-            return this.$store.getters.list;
-        },
+ import ItemList from './ItemList';
+ export default {
+   name: 'UserItems',
+   components: { ItemList },
+   data () {
+     return {
+       text: '',
+     }
    },
-    methods: {
-        add: function() {
-            this.$store.dispatch('addItem',{
-                item: this.item,
-            }).then(item => {
-                this.item = "";
-            });
-        },
-    }
+   created: function() {
+     this.$store.dispatch('getItems');
+   },
+   methods: {
+     add: function() {
+       this.$store.dispatch('addItem',{
+         item: this.text,
+       }).then(item => {
+	        this.text = "";
+       });
+     },
+   }
  }
 </script>
+
+<style scoped>
+.feed {
+    width: 600px;
+}
+.tweetForm {
+    background: #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.buttonWrap {
+    width: 100%;
+    display: flex;
+}
+button {
+    margin-left: auto;
+    height: 2em;
+    font-size: 0.9em;
+}
+textarea {
+    font-family: 'Avenir';
+    width: 100%;
+    height: 5em;
+    padding: 2px;
+    margin-bottom: 5px;
+    resize: none;
+    box-sizing: border-box;
+}
+</style>

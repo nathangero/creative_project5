@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="loggedIn">
-      <user-feed/>
+      <user-items/>
     </div>
     <div v-else>
       <welcome-page/>
@@ -12,10 +12,9 @@
 <script>
  import WelcomePage from './WelcomePage';
  import UserItems from './UserItems';
-//  import UserItems from './UserItems';
  export default {
    name: 'HomePage',
-   components: {WelcomePage},
+   components: {WelcomePage, UserItems},
    computed: {
      loggedIn: function() {
        return this.$store.getters.loggedIn;

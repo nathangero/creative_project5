@@ -1,19 +1,25 @@
 <template>
-  <nav>
-    <ul id="menu">
-      <li><router-link to="/">Home</router-link></li>
-      <li class="right" v-if="loggedIn"><a @click="logout" href="#">Logout</a></li>
-      <li class="right" v-if="loggedIn">{{user.username}}</li>
-      <form v-else class="right" v-on:submit.prevent="login">
-	<input v-model="username" placeholder="Username">
-	<input v-model="password" placeholder="Password">
-	<button class="primary" type="submit">Login</button>
-      </form>
-    </ul>
-    <div class="flexWrapper errorPlace">
-      <p v-if="loginError" class="flexRight error">{{loginError}}</p>
-    </div>
-  </nav>
+    <nav>
+        <ul id="menu">
+            <li v-if="loggedIn"><router-link to="/">My Stuff</router-link></li>
+            <li v-if="loggedIn"><form v-on:submit.prevent="search">
+                <input v-model="keywords" placeholder="Search">
+                <a href="#" v-on:click="search" class="search"><i class="fas fa-search"></i></a>
+            </form></li>
+            <li class="right" v-if="loggedIn"><a @click="logout" href="#">Logout</a></li>
+            <li class="right" v-if="loggedIn">{{user.name}}</li>
+            <li class="right" v-else>
+            <form v-on:submit.prevent="login">
+                <input v-model="username" placeholder="Username">
+                <input v-model="password" type="password" placeholder="Password">
+                <button class="primary" type="submit">Login</button>
+            </form>
+            </li>
+        </ul>
+        <div class="flexWrapper errorPlace">
+        <p v-if="loginError" class="flexRight error">{{loginError}}</p>
+        </div>
+    </nav>
 </template>
 
 <script>
@@ -21,8 +27,9 @@ export default {
     name: 'AppHeader',
     data () {
         return {
-            email: '',
+            username: '',
             password: '',
+            keywords: '',
         }
     },
     computed: {
@@ -39,15 +46,19 @@ export default {
     methods: {
         login: function() {
             this.$store.dispatch('login',{
-                email: this.email,
+                username: this.username,
                 password: this.password,
             }).then(user => {
-                this.email = '';
+                this.username = '';
                 this.password = '';
             });
         },
         logout: function() {
             this.$store.dispatch('logout');
+        },
+        search: function() {
+            this.$router.push({path: '/search', query: { keywords: this.keywords }});
+            this.keywords = ''; // Empty the keywords after use
         }
     }
 }
@@ -88,5 +99,11 @@ export default {
  }
  img {
      width: 50px;
+ }
+ input {
+     height: 0.5em;
+ }
+ .search {
+     margin-left: 5px;
  }
 </style>
