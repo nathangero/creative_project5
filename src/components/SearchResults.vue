@@ -1,7 +1,7 @@
 <template>
   <div v-if="loggedIn" class="feed">
     <h1>Search Results</h1>
-    <p>Searched for {{keywords}}</p>
+    <p>Searched for: {{keywords}}</p>
     <item-list/>
   </div>
 </template>

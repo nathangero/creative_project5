@@ -1,8 +1,8 @@
 <template>
     <nav>
         <ul id="menu">
-            <li v-if="loggedIn"><router-link to="/">My Stuff</router-link></li>
-            <li v-else><router-link to="/">Home</router-link></li>
+            <li v-if="loggedIn"><router-link to="/" class="home">My Stuff</router-link></li>
+            <li v-else><router-link to="/" class="home">Home</router-link></li>
             <li v-if="loggedIn">
                 <form v-on:submit.prevent="search">
                 <input v-model="keywords" placeholder="Search">
@@ -57,8 +57,9 @@ export default {
             });
         },
         logout: function() {
-            this.$store.dispatch('logout');
-            this.$router.push({path: '/'}); // Brings user back to homepage 
+            console.log('LOGGING OUT');
+            this.$store.dispatch('logout', '');
+            // this.$router.push({path: '/'}); // Brings user back to homepage 
         },
         search: function() {
             this.$router.push({path: '/search', query: { keywords: this.keywords }});
@@ -69,39 +70,39 @@ export default {
 </script>
 
 <style scoped>
- /* Strip the ul of padding and list styling */
- nav {
-     display: grid;
-     margin-bottom: 20px;
- }
- ul {
-     list-style-type:none;
-     margin:0;
-     padding:0;
- }
- /* Create a horizontal list with spacing */
- li {
-     display:inline-block;
-     float: left;
-     margin-right: 20px;
-     height: 50px;
-     text-align: center;
-     line-height: 50px;
-     color: #666;
- }
- .right {
-     float: right;
- }
- .errorPlace {
-     height: 20px;
- }
- img {
-     width: 50px;
- }
- input {
-     height: 0.5em;
- }
- .search {
-     margin-left: 5px;
- }
+/* Strip the ul of padding and list styling */
+nav {
+    display: grid;
+    margin-bottom: 20px;
+}
+ul {
+    list-style-type:none;
+    margin:0;
+    padding:0;
+}
+/* Create a horizontal list with spacing */
+li {
+    display:inline-block;
+    float: left;
+    margin-right: 20px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    color: #666;
+}
+.right {
+    float: right;
+}
+.errorPlace {
+    height: 20px;
+}
+home {
+    font-size: 50px;
+}
+input {
+    height: 0.5em;
+}
+.search {
+    margin-left: 5px;
+}
 </style>

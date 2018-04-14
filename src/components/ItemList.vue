@@ -3,7 +3,8 @@
     <ul>
       <li v-for="item in feed" class="item">
         <p class="idline"><span class="itemName">{{item.item}}</span>
-          <button v-on:click="deleteItem(item)" class="delete">X</button>
+          <button v-on:click="deleteItem(item)" class="edit">X</button>
+          <!-- <button v-on:click="editItem(item)" class="edit">Edit</button> -->
         </p>
         <p class="description">{{item.description}}</p>
       </li>
@@ -12,22 +13,32 @@
 </template>
 
 <script>
- import moment from 'moment';
- export default {
-   name: 'ItemList',
-   computed: {
-     feed: function() {
-       return this.$store.getters.list;
-     },
-   },
-   methods: {
-     deleteItem: function(item) {
-       this.$store.dispatch('deleteItem', {
-         id: item.id,
-       });
-     }
-   }
- }
+import moment from 'moment';
+export default {
+  name: 'ItemList',
+  computed: {
+    feed: function() {
+      return this.$store.getters.list;
+    },
+  },
+  methods: {
+    deleteItem: function(item) {
+      this.$store.dispatch('deleteItem', {
+        id: item.id,
+      });
+    },
+    editItem: function(item) {
+      
+      let newTitle = '';
+      let newDescription = '';
+      let newPicture = '';
+      // this.$store.dispatch('editItem', {
+      //   id: item.id,
+        
+      // })
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -49,14 +60,14 @@ li.idline {
     font-weight: bold;
     margin-right: 10px;
 }
-.delete {
+.edit {
   display: none;
   float: right;
   font-size: 1em;
   color: #494848;
-  min-width: 25px;
+  min-width: 30px;
 }
- li:hover .delete {
+ li:hover .edit {
      display: block;
  }
 

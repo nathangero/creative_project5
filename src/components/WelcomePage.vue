@@ -1,9 +1,9 @@
 <template>
   <div class="column">
-    <h1>Follow the Red Bird. Or anyone else.</h1>
-    <h2>Make friends in high places.</h2>
+    <h1>Keep track of all your stuff!</h1>
+    <h2>Never forget what you own ever again!</h2>
     <form v-on:submit.prevent="register">
-      <p>1. Choose a user name (this is how you will be known by others on Red Bird).</p>
+      <p>1. Choose a user name</p>
       <input class="narrow" v-model="username" placeholder="Username">
       <p>2. Create an account.</p>
       <input class="wide" v-model="name" placeholder="First and Last Name"><br/>
@@ -42,23 +42,23 @@ export default {
 </script>
 
 <style scoped>
- img {
-     width: 100px;
- }
+img {
+    width: 100px;
+}
 
- h1 {
-     margin-bottom: 0px;
- }
- h2 {
-     margin-top: 0px;
-     font-size: 1.2em;
-     font-weight: normal;
-     margin-bottom: 50px;
- }
- .narrow {
-     width: 170px;
- }
- .wide {
-     width: 370px;
- }
+h1 {
+    margin-bottom: 0px;
+}
+h2 {
+    margin-top: 0px;
+    font-size: 1.2em;
+    font-weight: normal;
+    margin-bottom: 50px;
+}
+.narrow {
+    width: 170px;
+}
+.wide {
+    width: 370px;
+}
 </style>
