@@ -21,10 +21,10 @@ export default new Vuex.Store({
         getToken: state => state.token,
         loggedIn: state => {
             if (state.token === '') { // If the token doesn't exist,
-                console.log("user isn't logged in");
+                // console.log("user isn't logged in");
                 return false; // User isn't logged in
             }
-            console.log("user is logged in");
+            // console.log("user is logged in");
             return true;
         },
         loginError: state => state.loginError,
@@ -57,10 +57,10 @@ export default new Vuex.Store({
     actions: {
         // Initialize
         initialize(context) {
-            console.log('@initialize');
+            // console.log('@initialize');
             let token = localStorage.getItem('token');
             if (token) {
-                console.log('token exists');
+                // console.log('token exists');
                 // see if we can use the token to get user account
                 axios.get("/api/me", getAuthHeader()).then(response => {
                     console.log('auth worked');
@@ -129,7 +129,18 @@ export default new Vuex.Store({
             });
         },
         addItem(context, item) {
-            axios.post('/api/users/' + context.state.user.id + '/items', item, getAuthHeader()).then(response => {
+            // Set up headers
+            let headers = getAuthHeader();
+            headers.headers['Content-Type'] = 'multipart/form-data';
+            //Set up form-data
+            let formData = new FormData();
+            formData.append('item', item.item);
+            formData.append('item', item.description);
+            if (item.image) {
+                formData.append('image', item.image);
+            }
+
+            axios.post('/api/users/' + context.state.user.id + '/items', formData, headers).then(response => {
                 return context.dispatch('getItems');
             }).catch(err => {
                 console.log("addItem failed:",err);

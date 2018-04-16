@@ -26,6 +26,18 @@ if (jwtSecret === undefined) {
   process.exit();
 }
 
+// multer setup
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'static/uploads');
+    },
+    filename: (req, file, cb) => {
+        cb(null, '${req.userID}-${Date.now()}-${file.originalname}');
+    }
+});
+const upload = multer({storage: storage});
+
 const verifyToken = (req, res, next) => {
     const token = req.headers['authorization'];
     if (!token) {
@@ -122,17 +134,28 @@ app.get('/api/users/:id/items', (req, res) => {
 });
 
 // Adding a new item to the database
-app.post('/api/users/:id/items', verifyToken, (req, res) => {
+app.post('/api/users/:id/items', verifyToken, upload.single('image'), (req, res) => {
     let id = parseInt(req.params.id);
     if (id !== req.userID) { // Check authentication
         res.status(403).send();
         return; // End function if not authenticated
     }
+
+    // Check if there's a photo
+    let path = '';
+    if (req.file) {
+        path = req.file.path;
+    }
+
+    console.log("accessing database");
     knex('users').where('id', id).first().then(user => {
-        return knex('items').insert({user_id: id, item: req.body.item, picture: req.body.picture, description: req.body.description});
+        return knex('items').insert({user_id: id, item: req.body.item, description: req.body.description, image: path});
+
     }).then(ids => {
+        console.log("accessing items");
         return knex('items').where('id',ids[0]).first();
     }).then(item => {
+        console.log("success!");
         res.status(200).json({item: item});
     }).catch(error => {
         console.log(error);
@@ -181,7 +204,7 @@ app.get('/api/users/:id/items/search', (req, res) => {
         .orderBy('item', 'desc')
         .limit(limit)
         .offset(offset)
-        .select('item', 'picture', 'description').then(items => { // Select items to be shown
+        .select('item', 'image', 'description').then(items => { // Select items to be shown
             res.status(200).json({items: items});
         }).catch(error => {
             res.status(500).json({error});

@@ -4,7 +4,7 @@
       <li v-for="item in feed" class="item">
         <p class="idline"><span class="itemName">{{item.item}}</span>
           <button v-on:click="deleteItem(item)" class="edit">X</button>
-          <!-- <button v-on:click="editItem(item)" class="edit">Edit</button> -->
+          <img v-bind:src="item.image"/>
         </p>
         <p class="description">{{item.description}}</p>
       </li>
@@ -32,10 +32,7 @@ export default {
       let newTitle = '';
       let newDescription = '';
       let newPicture = '';
-      // this.$store.dispatch('editItem', {
-      //   id: item.id,
-        
-      // })
+      
     }
   }
 }
@@ -67,8 +64,8 @@ li.idline {
   color: #494848;
   min-width: 30px;
 }
- li:hover .edit {
-     display: block;
- }
+li:hover .edit {
+    display: block;
+}
 
 </style>

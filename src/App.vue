@@ -58,6 +58,12 @@ input {
 a {
      color: #77C4D3;
 }
+.feed {
+    width: 600px;
+}
+.feed img {
+    width: 100%;
+}
 .flexWrapper {
     display:flex;
 }
