@@ -57,9 +57,7 @@ export default {
             });
         },
         logout: function() {
-            console.log('LOGGING OUT');
             this.$store.dispatch('logout', '');
-            // this.$router.push({path: '/'}); // Brings user back to homepage 
         },
         search: function() {
             this.$router.push({path: '/search', query: { keywords: this.keywords }});

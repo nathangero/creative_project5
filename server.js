@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
         cb(null, 'static/uploads');
     },
     filename: (req, file, cb) => {
-        cb(null, '${req.userID}-${Date.now()}-${file.originalname}');
+        cb(null, `${req.userID}-${Date.now()}-${file.originalname}`); // those are NOT quotation marks
     }
 });
 const upload = multer({storage: storage});
@@ -146,16 +146,18 @@ app.post('/api/users/:id/items', verifyToken, upload.single('image'), (req, res)
     if (req.file) {
         path = req.file.path;
     }
-
-    console.log("accessing database");
+    
     knex('users').where('id', id).first().then(user => {
-        return knex('items').insert({user_id: id, item: req.body.item, description: req.body.description, image: path});
+        return knex('items').insert({
+            user_id: id,
+            item: req.body.item,
+            description: req.body.description,
+            image: path,
+        });
 
     }).then(ids => {
-        console.log("accessing items");
         return knex('items').where('id',ids[0]).first();
     }).then(item => {
-        console.log("success!");
         res.status(200).json({item: item});
     }).catch(error => {
         console.log(error);

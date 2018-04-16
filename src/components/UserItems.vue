@@ -11,7 +11,7 @@
         <textarea v-model="description" placeholder="Brief description"/>
         <div v-bind:style="{inactive: !imagePreview, active:imagePreview }">
           <img class="preview" v-bind:src="imageData">
-          <button v-if="imagePreview" v-on:click="removePic(item)" class="edit">X</button>
+          <button v-if="imagePreview" class="edit">X</button>
         </div>
         <div class="buttons">
           <div class="icon">
@@ -41,7 +41,7 @@ export default {
         description: '',
         imageData: '',
         imagePreview: false,
-        file: '',
+        file: "",
       }
     },
     created: function() {
@@ -49,6 +49,7 @@ export default {
     },
     methods: {
       add: function() {
+        // console.log("title: " + this.title);
         this.$store.dispatch('addItem',{
           item: this.title,
           description: this.description,
@@ -56,24 +57,20 @@ export default {
         }).then(item => {
           this.title = "";
           this.description = "";
-          this.imageData = '';
+          this.imageData = "";
           this.imagePreview = false;
+          this.file = "";
         });
       },
       previewImage: function(event) {
-        console.log('@imagePrview');
         const input = event.target;
         // Check for file
 
-        console.log("is there a file?");
         if (input.files && input.files[0]) {
-          console.log("found file");
           this.file = input.files[0];
           const reader = new FileReader();
 
-          console.log("reader.onload");
           reader.onload = (e) => {
-            console.log("read as base64");
             // Read image as base64 and set to imageData
             this.imageData = e.target.result;
             this.imagePreview = true;
@@ -83,14 +80,15 @@ export default {
         }
       },
       removePic: function() {
-
+          this.imageData = '';
+          this.imagePreview = false;
+          this.file = "";
       }
     }
 }
 </script>
 
 <style scoped>
-
 .itemForm {
     background: #eee;
     padding: 10px;
@@ -112,6 +110,9 @@ export default {
 }
 .icon:active {
     transform: translateY(4px);
+}
+.input-file {
+  /* display: none; */
 }
 .edit {
   /* display: none; */

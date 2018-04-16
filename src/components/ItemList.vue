@@ -4,9 +4,10 @@
       <li v-for="item in feed" class="item">
         <p class="idline"><span class="itemName">{{item.item}}</span>
           <button v-on:click="deleteItem(item)" class="edit">X</button>
-          <img v-bind:src="item.image"/>
         </p>
         <p class="description">{{item.description}}</p>
+        <img v-bind:src="item.image"/>
+
       </li>
     </ul>
   </div>
@@ -41,6 +42,10 @@ export default {
 <style scoped>
 ul {
     list-style: none;
+}
+img {
+  width: 50%;
+  height: 50%;
 }
 li.item {
     border-bottom: 1px solid #ddd;

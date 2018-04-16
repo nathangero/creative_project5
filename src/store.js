@@ -116,8 +116,7 @@ export default new Vuex.Store({
         },
         logout(context,token) {
             context.commit('setUser', {});
-            context.commit('setToken',token);
-            
+            context.commit('setToken',token); 
         },
 
         // Items
@@ -134,8 +133,8 @@ export default new Vuex.Store({
             headers.headers['Content-Type'] = 'multipart/form-data';
             //Set up form-data
             let formData = new FormData();
-            formData.append('item', item.item);
-            formData.append('item', item.description);
+            formData.append('item', item.item); // ('name of the column', value)
+            formData.append('description', item.description);
             if (item.image) {
                 formData.append('image', item.image);
             }
