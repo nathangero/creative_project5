@@ -205,7 +205,7 @@ app.get('/api/users/:id/items/search', (req, res) => {
     let like2 = '%' + req.query.keywords + '%'; // Keyword in middle of title
     let like3 = req.query.keywords + '%'; // Keyword at beginning of title
 
-    console.log("searching keywords: " + req.query.keywords);
+    // console.log("searching keywords: " + req.query.keywords);
     knex('users').join('items', 'users.id', 'items.user_id') // Join the users and items by the user's id
         // .whereRaw("MATCH (item) AGAINST ('" + req.query.keywords + "')") // Find matches in join
         .where('item', 'like', like1)
