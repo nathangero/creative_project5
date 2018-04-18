@@ -59,10 +59,10 @@ a {
      color: #77C4D3;
 }
 .feed {
-    width: 600px;
+    max-width: 600px;
 }
 .feed img {
-    width: 100%;
+    max-width: 500px;
 }
 .flexWrapper {
     display:flex;

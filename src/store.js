@@ -159,6 +159,7 @@ export default new Vuex.Store({
         // Search
         doSearch(context, keywords) {
             // Search for only items that the user has
+            console.log("@doSearch");
             axios.get('/api/users/' + context.state.user.id + '/items/search?keywords=' + keywords).then(response => {
                 context.commit('setList', response.data.items);
             }).catch(error => {

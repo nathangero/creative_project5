@@ -60,6 +60,7 @@ export default {
             this.$store.dispatch('logout', '');
         },
         search: function() {
+            console.log("search");
             this.$router.push({path: '/search', query: { keywords: this.keywords }});
             this.keywords = ''; // Empty the keywords after use
         }

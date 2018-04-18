@@ -1,32 +1,36 @@
 <template>
   <div class="feed">
-    <div>
-      <!-- <form v-on:submit.prevent="add" class="tweetForm">
-        <input v-model="title" placeholder="Item Name"/>
-        <textarea v-model="description" placeholder="Brief description"/><br/>
-        <div class="buttonWrap">
-          <button class="primary" type="submit">Add Item</button> -->
-      <form enctype="multipart/form-data" v-on:submit.prevent="add" class="itemForm">
-        <input v-model="title" placeholder="Item Name"/>
-        <textarea v-model="description" placeholder="Brief description"/>
-        <div v-bind:style="{inactive: !imagePreview, active:imagePreview }">
-          <img class="preview" v-bind:src="imageData">
-          <button v-if="imagePreview" class="edit">X</button>
-        </div>
-        <div class="buttons">
-          <div class="icon">
-            <label for="file-input">
-              <i class="far fa-image" aria-hidden="true"></i>
-            </label>
-            <input id="file-input" type="file" v-on:change="previewImage" accept="image/*" class="input-file">
-          </div>
-          <div class="buttonWrap">
-            <button class="primary" type="submit">Add Item</button>
-          </div>
-        </div>
-      </form>
+    <div class="wrapper">
+      <button id="popupButton" @click="showPopup">Add Item</button>
     </div>
-    <item-list/>
+    <div id="popup">
+      <div id="popupForm">
+        <form enctype="multipart/form-data" v-on:submit.prevent="add" class="itemForm">
+          <label id="close" @click="closePopup">X</label>
+          <input v-model="title" placeholder="Item Name"/>
+          <textarea v-model="description" placeholder="Brief description"/>
+          <div v-bind:style="{inactive: !imagePreview, active:imagePreview }">
+            <img class="preview" v-bind:src="imageData">
+            <label id="closePreview" v-if="imagePreview" class="edit" @click="removePic">X</label>
+          </div>
+          <div class="buttons">
+            <div class="icon">
+              <label for="file-input">
+                <i class="far fa-image" aria-hidden="true"></i>
+              </label>
+              <input id="file-input" ref="fileupload" type="file" v-on:change="previewImage" accept="image/*" class="input-file">
+            </div>
+            <div class="buttonWrap">
+              <button class="primary" type="submit">Add</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="listWrapper">
+      <item-list/>
+    </div>
   </div>
 </template>
 
@@ -55,12 +59,18 @@ export default {
           description: this.description,
           image: this.file,
         }).then(item => {
+          this.closePopup();
+        });
+      },
+      clearFields: function() {
           this.title = "";
           this.description = "";
           this.imageData = "";
           this.imagePreview = false;
           this.file = "";
-        });
+          const input = this.$refs.fileupload;
+          input.type = 'text';
+          input.type = 'file';
       },
       previewImage: function(event) {
         const input = event.target;
@@ -83,25 +93,40 @@ export default {
           this.imageData = '';
           this.imagePreview = false;
           this.file = "";
-      }
+          const input = this.$refs.fileupload;
+          input.type = 'text';
+          input.type = 'file';
+      },
+      showPopup: function() {
+        document.getElementById('popup').style.display = "block";
+      },
+      closePopup: function() {
+        document.getElementById('popup').style.display = "none";
+        this.clearFields();
+      },
     }
 }
 </script>
 
 <style scoped>
+@import "http://fonts.googleapis.com/css?family=Raleway";
+
 .itemForm {
     background: #eee;
     padding: 10px;
     margin-bottom: 10px;
+    border-radius: 3px;
+}
+.wrapper {
+  text-align: center;
 }
 .buttonWrap {
     width: 20%;
     display: inline-block;
     text-align: right;
-    /* display: inline; */
 }
 .buttons {
-      display: flex;
+    display: flex;
     justify-content: space-between;
 }
 .icon {
@@ -111,12 +136,8 @@ export default {
 .icon:active {
     transform: translateY(4px);
 }
-.input-file {
-  /* display: none; */
-}
 .edit {
-  /* display: none; */
-  float: right;
+  margin: 0;
   font-size: 1em;
   color: #494848;
   min-width: 30px;
@@ -145,4 +166,59 @@ textarea {
     resize: none;
     box-sizing: border-box;
 }
+div .listWrapper {
+  margin-right: -200px;
+  max-width: 100%;
+}
+
+/* Popup code */
+#popupButton {
+  display: block;
+  text-align: center;
+  background-color: #F35537;
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+  margin-right: -50px;
+}
+#popup {
+  width: 100%;
+  height: 100%;
+  opacity:.95;
+  top: 0;
+  left: 0;
+  display: none;
+  position: fixed;
+  background-color: black;
+  overflow:auto;
+}
+#close {
+  position:absolute;
+  right:-14px;
+  top:-14px;
+  cursor:pointer;
+  background-color: black;
+  color: white;
+  border-radius: 20px;
+  min-width: 20px;
+  text-align: center;
+}
+
+#closePreview {
+  float:right;
+  cursor: pointer;
+  background-color: rgb(201, 201, 201);
+  color: black;
+  border-radius: 2px;
+  min-width: 20px;
+  text-align: center;
+}
+#popupForm {
+  position:absolute;
+  left:50%;
+  top:17%;
+  margin-left:-202px;
+  font-family:'Raleway',sans-serif
+}
+
 </style>

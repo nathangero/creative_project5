@@ -200,15 +200,24 @@ app.get('/api/users/:id/items/search', (req, res) => {
         limit = parseInt(req.query.limit);
     }
 
+    // Allows robust searching of item titles
+    let like1 = '%' + req.query.keywords; // Keyword at end of title
+    let like2 = '%' + req.query.keywords + '%'; // Keyword in middle of title
+    let like3 = req.query.keywords + '%'; // Keyword at beginning of title
+
     console.log("searching keywords: " + req.query.keywords);
     knex('users').join('items', 'users.id', 'items.user_id') // Join the users and items by the user's id
-        .whereRaw("MATCH (item) AGAINST ('" + req.query.keywords + "')") // Find matches in join
+        // .whereRaw("MATCH (item) AGAINST ('" + req.query.keywords + "')") // Find matches in join
+        .where('item', 'like', like1)
+        .orWhere('item', 'like', like2)
+        .orWhere('item', 'like', like3)
         .orderBy('item', 'desc')
         .limit(limit)
         .offset(offset)
         .select('item', 'image', 'description').then(items => { // Select items to be shown
             res.status(200).json({items: items});
         }).catch(error => {
+            console.log(error);
             res.status(500).json({error});
         });
 });
