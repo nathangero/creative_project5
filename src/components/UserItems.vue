@@ -197,8 +197,8 @@ div .listWrapper {
   right:-14px;
   top:-14px;
   cursor:pointer;
-  background-color: black;
-  color: white;
+  background-color: yellow;
+  color: black;
   border-radius: 20px;
   min-width: 20px;
   text-align: center;

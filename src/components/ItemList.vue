@@ -6,7 +6,11 @@
           <button @click="deleteItem(item)" class="delete">X</button>
         </p>
         <p class="description">{{item.description}}</p>
-        <img href="#" class="image" v-bind:src="item.image" @click="enlarge(item.image)"/>
+        <img href="#" class="image" v-bind:src="item.image" @click="showPopup"/>
+        <div id="image">
+          <img class="enlarged" v-bind:src="item.image"/>
+          <label id="closePreview" @click="closePopup">X</label>
+        </div>
       </li>
     </ul>
   </div>
@@ -27,9 +31,14 @@ export default {
         id: item.id,
       });
     },
-    enlarge: function(item) {
-      alert('hi');
-    }
+    showPopup: function() {
+      console.log('@showPopup');
+      document.getElementById('image').style.display = "block";
+    },
+    closePopup: function() {
+      console.log('@closePopup');
+      document.getElementById('image').style.display = "none";
+    },
   }
 }
 </script>
@@ -45,9 +54,6 @@ ul {
   margin-left: auto;
   width: 1000px;
 }
-li {
-  
-}
 img {
   max-width: 50%;
   max-height: 50%;
@@ -60,12 +66,6 @@ li.item {
     max-width: 600px;
 
 }
-/* li.description {
-    margin-top: 0px;
-}
-li.idline {
-    margin-bottom: 5px;
-} */
 .itemName {
     font-weight: bold;
     margin-right: 10px;
@@ -79,6 +79,36 @@ li.idline {
 }
 li:hover .delete {
     display: block;
+}
+
+/* popup */
+#image {
+  min-width: 100%;
+  min-height: 100%;
+  opacity:.95;
+  top: 0;
+  left: 0;
+  padding-top: 2px;
+  padding-bottom: 15px;
+  text-align: center;
+  display: none;
+  position: fixed;
+  background-color: black;
+  overflow:auto;
+  cursor: default;
+}
+#closePreview {
+  position:absolute;
+  cursor:pointer;
+  margin-left: 7px;
+  background-color: white;
+  color: black;
+  border-radius: 20px;
+  min-width: 30px;
+  text-align: center;
+}
+.enlarged {
+  cursor: default;
 }
 
 </style>

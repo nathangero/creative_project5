@@ -2,6 +2,9 @@
   <div id="app">
     <app-header/>
     <router-view/>
+    <footer>
+        <a id="github" target="_blank" href="https://github.com/nathangero/creative_project5">Github Repo</a>
+    </footer>
   </div>
 </template>
 
@@ -57,6 +60,10 @@ input {
 }
 a {
      color: #77C4D3;
+}
+footer {
+    float: right;
+    
 }
 .feed {
     max-width: 600px;
